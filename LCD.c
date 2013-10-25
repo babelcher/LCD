@@ -1,3 +1,5 @@
+#include <msp430.h>
+#include "lcd.h"
 /*
  * LCD.c
  *
@@ -6,6 +8,26 @@
  */
 
 #define RS_MASK 0x40
+int LCDCON = 0x0;
+int LCDDATA = 0x0;
+int LCDSEND = 0x0;
+
+void writeCommandNibble(char commandNibble);
+void writeCommandByte(char commandByte);
+void writeDataByte(char dataByte);
+void LCD_write_8(char byteToSend);
+void LCD_write_4(unsigned char byte);
+void SPI_send(char byteToSend);
+void initSPI();
+void set_SS_hi();
+void set_SS_lo();
+void delayMicro();
+void delayMilli();
+void LCDclear();
+
+
+
+
 
 void LCDinit() {
 	writeCommandNibble(0x03);
@@ -66,6 +88,26 @@ void LCD_write_8(char byteToSend) {
 	LCD_write_4(sendByte);
 }
 
+void LCD_write_4(unsigned char byte){
+	unsigned char sendByte = byte;
+
+	sendByte &= 0xF0;
+	sendByte |= LCDCON;
+	sendByte &= 0x7F;
+
+	SPI_send(sendByte);
+	delayMicro();
+
+	sendByte |= 0x80;
+	SPI_send(sendByte);
+	delayMicro();
+
+	sendByte &= 0x7F;
+	SPI_send(sendByte);
+	delayMicro();
+
+}
+
 void SPI_send(char byteToSend) {
 	char readByte;
 
@@ -94,7 +136,7 @@ void initSPI(){
 	P1SEL |= BIT6;
 	P1SEL2 |= BIT6;
 
-	UCB0CTL1 &= UCSWRST;
+	UCB0CTL1 &= ~ UCSWRST;
 }
 
 void set_SS_hi(){
@@ -115,6 +157,10 @@ void delayMilli(){
 	_delay_cycles(1645);
 }
 
-void LCD_write_4(unsigned char sendByte){
-
+void LCDclear(){
+	writeCommandByte(1);
 }
+
+
+
+
