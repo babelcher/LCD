@@ -8,10 +8,11 @@ int main(void) {
 	WDTCTL = WDTPW | WDTHOLD; //stops watchdog timer
 	
 	char * bestClassMessage = "ECE382 is my favorite class!";
+	char *myPersonalMessage = "Not so sure right now though.";
     initSPI();
     LCDinit();
     LCDclear();
-    writeString(bestClassMessage);
+    scrollString(bestClassMessage, myPersonalMessage);
 
 	return 0;
 }

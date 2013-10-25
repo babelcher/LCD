@@ -24,6 +24,7 @@ void set_SS_lo();
 void delayMicro();
 void delayMilli();
 void LCDclear();
+char *printFromLocation(char *start, char *current);
 
 
 
@@ -176,6 +177,42 @@ void writeString(char * string){
 		string++;
 	}
 
+}
+
+void scrollString(char * string1, char * string2){
+	char *current1 = string1;
+	char *current2 = string2;
+	while(1){
+		cursorToLineOne();
+		current1 = printFromLocation(string1, current1);
+		cursorToLineTwo();
+		current2 = printFromLocation(string2, current2);
+		_delay_cycles(200000);
+	}
+}
+
+char *printFromLocation(char *start, char *current){
+	int i;
+	if(*current == 0){
+		current = start;
+	}
+	char *displayCharacter = current;
+	for(i = 0; i < 8; i++){
+		writeChar(*displayCharacter);
+		displayCharacter++;
+		if(*displayCharacter == 0){
+			displayCharacter = start;
+		}
+	}
+	return current + 1;
+}
+
+void cursorToLineTwo(){
+	writeCommandByte(0xC0);
+}
+
+void cursorToLineOne(){
+	writeCommandByte(2);
 }
 
 
