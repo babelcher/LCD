@@ -81,3 +81,40 @@ void SPI_send(char byteToSend) {
 
 	set_SS_hi();
 }
+
+void initSPI(){
+	UCB0CTL1 |= UCSWRST;
+	UCB0CTL0 |= UCCKPH|UCMSB|UCMST|UCSYNC;
+	UCB0CTL1 |= UCSSEL1;
+
+	P1SEL |= BIT5;
+	P1SEL2 |= BIT5;
+	P1SEL |= BIT7;
+	P1SEL2 |= BIT7;
+	P1SEL |= BIT6;
+	P1SEL2 |= BIT6;
+
+	UCB0CTL1 &= UCSWRST;
+}
+
+void set_SS_hi(){
+	P1OUT |= BIT0;
+}
+
+void set_SS_lo(){
+	P1OUT &= BIT0;
+}
+
+//implements a delay of ~41 us
+void delayMicro(){
+	_delay_cycles(41);
+}
+
+//implements a delay of ~1.645 ms
+void delayMilli(){
+	_delay_cycles(1645);
+}
+
+void LCD_write_4(unsigned char sendByte){
+
+}
