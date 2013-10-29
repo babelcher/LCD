@@ -5,6 +5,7 @@
  *
  *  Created on: Oct 22, 2013
  *      Author: C15Brandon.Belcher
+ *      Description: Implements a driver for the LCD in the black box.
  */
 
 #define RS_MASK 0x40
@@ -191,6 +192,7 @@ void scrollString(char * string1, char * string2){
 	}
 }
 
+//this is a helper function to print each string and make scrollString work correctly
 char *printFromLocation(char *start, char *current){
 	int i;
 	if(*current == 0){

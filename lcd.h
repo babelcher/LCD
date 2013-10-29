@@ -5,6 +5,8 @@
  *
  *  Created on: Oct 22, 2013
  *      Author: C15Brandon.Belcher
+ *      Description: Header file given by Capt Branchflower to
+ *      implement a LCD driver.
  */
 
 #ifndef LCD_H_
